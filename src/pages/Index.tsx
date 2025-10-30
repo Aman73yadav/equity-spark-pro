@@ -8,11 +8,13 @@ import AIAssistant from "@/components/AIAssistant";
 import NotificationCenter from "@/components/NotificationCenter";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, LogOut, LayoutDashboard, Map, Users, Bot, Bell } from "lucide-react";
+import { LayoutDashboard, Map, Users, Bot, Bell, Building, Heart, MessageSquare, User as UserIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -53,7 +55,7 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-white" />
+                <Building className="h-6 w-6 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -62,17 +64,51 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">Premium Real Estate Platform</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              onClick={handleSignOut}
-              className="gap-2"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/profile')}
+                className="gap-2"
+              >
+                <UserIcon className="h-4 w-4" />
+                Profile
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
       </header>
+
+      {/* Navigation */}
+      <div className="border-b bg-background sticky top-[73px] z-40">
+        <div className="container mx-auto px-4">
+          <nav className="flex gap-1 overflow-x-auto py-2">
+            <Button variant="ghost" onClick={() => navigate('/')} className="gap-2 shrink-0">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Button>
+            <Button variant="ghost" onClick={() => navigate('/properties')} className="gap-2 shrink-0">
+              <Building className="h-4 w-4" />
+              Properties
+            </Button>
+            <Button variant="ghost" onClick={() => navigate('/messages')} className="gap-2 shrink-0">
+              <MessageSquare className="h-4 w-4" />
+              Messages
+            </Button>
+            <Button variant="ghost" onClick={() => navigate('/favorites')} className="gap-2 shrink-0">
+              <Heart className="h-4 w-4" />
+              Favorites
+            </Button>
+          </nav>
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
